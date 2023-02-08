@@ -1,0 +1,1064 @@
+<html>
+<head>
+	<link rel="icon" href="blockchain.png" type="image/icon type">
+<title>Patient Medical Record</title>
+</head>
+    <body>
+	<p><a href="hospital.html"><button type="submit" class="hidden" style='margin-right:16px'>Hospital Registration</button></a><a href="doctor.html"><button type="submit" class="hidden" style='margin-right:16px'>Doctor Registration</button></a><a href="patient.html"><button type="submit" class="hidden" style='margin-right:16px'>Patient Registration</button></a><a href="patient_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Patient Details</button></a><a href="record_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Medical Record</button></a><a href="examine_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Patient Examine details</button></a></p>
+      
+        <h1>Patient Medical Record </h1>
+        <script src="https://cdn.jsdelivr.net/npm/web3@1.2.8/dist/web3.js"></script>
+    <script>	
+	
+	var account;
+	window.addEventListener('load', async () => {
+
+	
+		if (typeof window.ethereum !== 'undefined') { 
+			console.log("MetaMask is Available :) !"); 
+			}
+			
+		// Modern DApp browsers
+		if (window.ethereum) {
+			window.web3 = new Web3(ethereum);
+			
+			// To prevent the page reloading when the MetaMask network changes
+			ethereum.autoRefreshOnNetworkChange = false;
+			
+			// To Capture the account details from MetaMask
+			const accounts = await ethereum.enable();
+			account = accounts[0];
+				
+			}
+		// Legacy DApp browsers
+		else if (window.web3) {
+			window.web3 = new Web3(web3.currentProvider);
+			//window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+			}
+		// Non-DApp browsers
+		else {
+			console.log('Non-Ethereum browser detected. Please install MetaMask');
+			}
+			
+			});
+    	
+        var abi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "approved",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ApprovalForAll",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_diag_summary",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_prescription",
+				"type": "string"
+			}
+		],
+		"name": "func_diagnosis",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_applicable",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "_policy_no",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "_insurer",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_policy_type",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_policy_limit",
+				"type": "string"
+			}
+		],
+		"name": "insurance_details",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "medical_record",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_family_history",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_personal_history",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_drug_history",
+				"type": "string"
+			}
+		],
+		"name": "past_illness",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_complaints",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_duration",
+				"type": "string"
+			}
+		],
+		"name": "present_illness",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_previous",
+				"type": "string"
+			}
+		],
+		"name": "previous_dates",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_treatment",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_date_treatment",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_doctor_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_hospital_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_discharge",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_follow_up",
+				"type": "string"
+			}
+		],
+		"name": "treatment_summary",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_func_diagnosis",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_insurance",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_past_illness",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_present_illness",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_previous_dates",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_treatment_summary",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getApproved",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "namedecl",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "ownerOf",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symboldecl",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        var contractaddress = '0x72dC8eF00317BE1C6b4BB08EaAbA57771f6eA741';
+		 function prev_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '5000000'});
+			var ds1 = document.getElementById("dates1").value;
+            var id = document.getElementById("id0").value;
+			 var result = myContract.methods.previous_dates(id,ds1).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+				}
+				function insu_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '5000000'});
+			var id = document.getElementById("id1").value;
+			var ids1 = document.getElementById("appl").value;
+			var ids2 = document.getElementById("pono").value;
+			var ids3 = document.getElementById("ins").value;
+			var ids4 = document.getElementById("type").value;
+			var ids5 = document.getElementById("lim").value;
+            var iid = document.getElementById("id1").value;
+			var pd1 = document.getElementById("com").value;
+			var pd2 = document.getElementById("dur").value;
+            var prid = document.getElementById("id2").value;
+			var pad1 = document.getElementById("fam").value;
+			var pad2 = document.getElementById("per").value;
+			var pad3 = document.getElementById("drug").value;
+            var pid = document.getElementById("id3").value;
+			var dd1 = document.getElementById("diag").value;
+			var dd2 = document.getElementById("pre").value;
+            var dpid = document.getElementById("id4").value;
+			var td1 = document.getElementById("treat").value;
+			var td2 = document.getElementById("date").value;
+			var td3 = document.getElementById("doc").value;
+			var td4 = document.getElementById("hos").value;
+			var td5 = document.getElementById("dis").value;
+			var td6 = document.getElementById("fol").value;
+            var tpid = document.getElementById("id5").value;
+			
+			
+			 var result = myContract.methods.medical_record(id).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+            
+        			
+             var result = myContract.methods.insurance_details(iid,ids1,ids2,ids3,ids4,ids5).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+       
+             var result = myContract.methods.present_illness(prid,pd1,pd2).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+       
+			
+             var result = myContract.methods.past_illness(pid,pad1,pad2,pad3).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+       
+			
+             var result = myContract.methods.func_diagnosis(dpid,dd1,dd2).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+        
+			
+             var result = myContract.methods.treatment_summary(tpid,td1,td2,td3,td4,td5,td6).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+               
+                });
+        }
+		
+        </script>
+
+       <h2>Previous dates of medical record updated</h2>
+    <div><form>
+		<table style="width:100%"> 
+            <tr>
+			<td>Enter Patient Id:</td>
+			<td><input type="text" id="id0" name="id0"></td>
+		  </tr>
+            <tr>
+			<td> Dates:</td>
+			<td><input type="text" id="dates1" name="dates1"></td>
+		  </tr>
+		 		
+		
+		 
+		</table>
+		<input type="button" onclick="prev_details()" value="Submit">
+	</form></div>
+        <h2>Insurance Details</h2>
+    <div><form>
+		<table style="width:100%"> 
+            <tr>
+			<td>Enter Record Id:</td>
+			<td><input type="text" id="id1" name="id1"></td>
+		  </tr>
+            <tr>
+			<td> Is Insurance applicable?(yes/no):</td>
+			<td><input type="text" id="appl" name="appl"></td>
+		  </tr>
+		  <tr>
+			<td>Policy Number:</td>
+			<td><input type="text" id="pono" name="pono"></td>
+		  </tr>
+		   
+		   <tr>
+			<td>Insurer:</td>
+			<td><input type="text" id="ins" name="ins"></td>
+		  </tr>
+            <tr>
+			<td>Policy Type:</td>
+			<td><input type="text" id="type" name="type"></td>
+		  </tr>
+		  <tr>
+			<td>Policy Limit:</td>
+			<td><input type="text" id="lim" name="lim"></td>
+		  </tr>           
+		  
+		</table>
+		
+		
+	</form></div>
+	<h2> Present Illness Details</h2>
+    <div><form>
+		<table style="width:100%"> 
+            <tr>
+			<td>Enter Record Id:</td>
+			<td><input type="text" id="id2" name="id2"></td>
+		  </tr>
+            <tr>
+			<td> Complaints:</td>
+			<td><input type="text" id="com" name="com"></td>
+		  </tr>
+		  <tr>
+			<td>Duation:</td>
+			<td><input type="text" id="dur" name="dur"></td>
+		  </tr>
+		</table>
+		
+	</form></div>
+	<h2> Past Illness Details</h2>
+    <div><form>
+		<table style="width:100%"> 
+            <tr>
+			<td>Enter Record Id:</td>
+			<td><input type="text" id="id3" name="id3"></td>
+		  </tr>
+            <tr>
+			<td> Family History:</td>
+			<td><input type="text" id="fam" name="fam"></td>
+		  </tr>
+		  <tr>
+			<td>Personal History:</td>
+			<td><input type="text" id="per" name="per"></td>
+		  </tr>
+		  <tr>
+			<td>Drug History:</td>
+			<td><input type="text" id="drug" name="drug"></td>
+		  </tr>
+		</table>
+		
+	</form></div>
+	<h2>Provisional Diagnosis Details</h2>
+    <div><form>
+		<table style="width:100%"> 
+            <tr>
+			<td>Enter Record Id:</td>
+			<td><input type="text" id="id4" name="id4"></td>
+		  </tr>
+            <tr>
+			<td> Diagnosis Summary:</td>
+			<td><input type="text" id="diag" name="diag"></td>
+		  </tr>
+		  <tr>
+			<td>Prescription:</td>
+			<td><input type="text" id="pre" name="pre"></td>
+		  </tr>
+		</table>
+		
+	</form></div>
+	
+        <h2>Treatment Summary</h2>
+    <div><form>
+		<table style="width:100%"> 
+            <tr>
+			<td>Enter Record Id:</td>
+			<td><input type="text" id="id5" name="id5"></td>
+		  </tr>
+            <tr>
+			<td> Treatment:</td>
+			<td><input type="text" id="treat" name="treat"></td>
+		  </tr>
+		  <tr>
+			<td>Date of Treatment:</td>
+			<td><input type="text" id="date" name="date"></td>
+		  </tr>
+		   
+		   <tr>
+			<td>Treated Doctor Id:</td>
+			<td><input type="text" id="doc" name="doc"></td>
+		  </tr>
+            <tr>
+			<td>Treated Hospital Id:</td>
+			<td><input type="text" id="hos" name="hos"></td>
+		  </tr>
+		  <tr>
+			<td>Discharge:</td>
+			<td><input type="text" id="dis" name="dis"></td>
+		  </tr>  
+			<tr>
+			<td>Follow Up:</td>
+			<td><input type="text" id="fol" name="fol"></td>
+		  </tr>	
+		</table>
+		
+	</form></div>
+        
+		 <div><form>
+		<table style="width:100%"> 
+		<tr>
+		  <td><input type="button" onclick="insu_details()" value="Submit"></td>
+		  </tr>
+		  </table>
+		
+	</form></div>
+	<style>
+		* {
+		  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+			Helvetica Neue, Ubuntu, sans-serif;
+		  text-align: center;
+		  margin-top: 2%;
+  
+		}
+		input[type="text"],
+		select {
+		  width: 100%;
+		  padding: 12px 20px;
+		  margin: 8px 0;
+		  display: inline-block;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		  box-sizing: border-box;
+		}
+  
+		input[type="button"] {
+		  width: 60%;
+		  background-color: #4caf50;
+		  color: white;
+		  padding: 14px 20px;
+		  margin: 20px 30px;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		}
+  
+		input[type="button"]:hover {
+		  background-color: #45a049;
+		}
+  
+		div {
+		  border-radius: 5px;
+		  margin-left: 20%;
+		  margin-right: 20%;
+		  background-color: #f2f2f2;
+		  padding: 20px;
+		}
+  
+		button {
+		  border: 2px solid black;
+		  background-color: white;
+		  color: black;
+		  padding: 14px 28px;
+		  font-size: 16px;
+		  cursor: pointer;
+		}
+		button:hover {
+		  background-color: black;
+		  color: white;
+		}
+	  </style>
+    </body>
+</html>

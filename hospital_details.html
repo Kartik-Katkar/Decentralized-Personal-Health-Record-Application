@@ -1,0 +1,234 @@
+<html>
+<head>
+<title>Hospital Details</title>
+<link rel="icon" href="blockchain.png" type="image/icon type">
+</head>
+    <body>
+	<p><a href="hospital.html"><button type="submit" class="hidden" style='margin-right:16px'>Hospital Registration</button></a><a href="doctor.html"><button type="submit" class="hidden" style='margin-right:16px'>Doctor Registration</button></a><a href="patient.html"><button type="submit" class="hidden" style='margin-right:16px'>Patient Registration</button></a><a href="patient_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Patient Details</button></a><a href="record_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Medical Record</button></a><a href="examine_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Patient Examine details</button></a></p>
+      
+        <h1> Display Hospital Details </h1>
+        <script src="https://cdn.jsdelivr.net/npm/web3@1.2.8/dist/web3.js"></script>
+    <script>	
+	
+	var account;
+	window.addEventListener('load', async () => {
+
+	
+		if (typeof window.ethereum !== 'undefined') { 
+			console.log("MetaMask is Available :) !"); 
+			}
+			
+		// Modern DApp browsers
+		if (window.ethereum) {
+			window.web3 = new Web3(ethereum);
+			
+			// To prevent the page reloading when the MetaMask network changes
+			ethereum.autoRefreshOnNetworkChange = false;
+			
+			// To Capture the account details from MetaMask
+			const accounts = await ethereum.enable();
+			account = accounts[0];
+				
+			}
+		// Legacy DApp browsers
+		else if (window.web3) {
+			window.web3 = new Web3(web3.currentProvider);
+			//window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+			}
+		// Non-DApp browsers
+		else {
+			console.log('Non-Ethereum browser detected. Please install MetaMask');
+			}
+			
+			});
+    	
+        var abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "hospital_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_hospital_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_hospital_address",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_hospital_spec",
+				"type": "string"
+			}
+		],
+		"name": "store_doctor_details",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "hospital_id",
+				"type": "uint256"
+			}
+		],
+		"name": "retreive_hospital_details",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+
+        var contractaddress = '0xA64371921f3d0eb388ebFb8166cBb9E62eD7D051';
+        
+        function add_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '500000'});
+			var ds1 = document.getElementById("addr").value;
+			var ds2 = document.getElementById("spec").value;
+            var tname = document.getElementById("name1").value;
+            var id = document.getElementById("id1").value;
+             var result = myContract.methods.store_doctor_details(id,tname,ds1,ds2).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { document.getElementById("result").innerHTML = result; }
+               
+                });
+        }
+		function show_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '500000'});
+            var idd = document.getElementById("tid").value;
+             var result = myContract.methods.retreive_hospital_details(idd).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_name").innerHTML = result[0];
+					document.getElementById("get_addr").innerHTML = result[1];
+					document.getElementById("get_spec").innerHTML = result[2];
+                }
+               
+                });
+        }
+        function del_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '500000'});
+            var bid = document.getElementById("bid1").value;
+             var result = myContract.methods.burnMyToken(bid).send(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("result1").innerHTML = result;
+                }
+               
+                });
+        }
+        </script>
+
+        <div>
+        <form>
+		<table style="width:100%">
+		  <tr>
+			<td>Enter Hospital Id:</td>
+			<td><input type="text" id="tid" name="tid"></td>
+		  </tr>
+		  
+            <tr>
+			<td> Hospital Name:</td>
+			<td><div id="get_name"></div></td>
+		  </tr>
+		  <tr>
+			<td>Hospital Address:</td>
+			<td><div id="get_addr"></div></td>
+		  </tr>
+		  <tr>
+			<td>Hospital Specification:</td>
+			<td><div id="get_spec"></div></td>
+		  </tr>
+		</table>
+		<input type="button" onclick="show_details()" value="Get Details">
+        </form>  
+	</div>
+		<style>
+			* {
+			  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+				Helvetica Neue, Ubuntu, sans-serif;
+			  text-align: center;
+			  margin-top: 2%;
+	  
+			}
+			input[type="text"],
+			select {
+			  width: 100%;
+			  padding: 12px 20px;
+			  margin: 8px 0;
+			  display: inline-block;
+			  border: 1px solid #ccc;
+			  border-radius: 4px;
+			  box-sizing: border-box;
+			}
+	  
+			input[type="button"] {
+			  width: 60%;
+			  background-color: #4caf50;
+			  color: white;
+			  padding: 14px 20px;
+			  margin: 20px 30px;
+			  border: none;
+			  border-radius: 4px;
+			  cursor: pointer;
+			}
+	  
+			input[type="button"]:hover {
+			  background-color: #45a049;
+			}
+	  
+			div {
+			  border-radius: 5px;
+			  margin-left: 20%;
+			  margin-right: 20%;
+			  background-color: #f2f2f2;
+			  padding: 20px;
+			}
+	  
+			button {
+			  border: 2px solid black;
+			  background-color: white;
+			  color: black;
+			  padding: 14px 28px;
+			  font-size: 16px;
+			  cursor: pointer;
+			}
+			button:hover {
+			  background-color: black;
+			  color: white;
+			}
+		  </style>
+    </body>
+</html>

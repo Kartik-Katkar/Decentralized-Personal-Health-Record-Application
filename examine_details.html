@@ -1,0 +1,971 @@
+<html>
+<head>
+<title>Patient body examine details</title>
+<link rel="icon" href="blockchain.png" type="image/icon type">
+</head>
+    <body>
+	<p><a href="hospital.html"><button type="submit" class="hidden" style='margin-right:16px'>Hospital Registration</button></a><a href="doctor.html"><button type="submit" class="hidden" style='margin-right:16px'>Doctor Registration</button></a><a href="patient.html"><button type="submit" class="hidden" style='margin-right:16px'>Patient Registration</button></a><a href="patient_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Patient Details</button></a><a href="record_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Medical Record</button></a></p>
+      
+        
+        <script src="https://cdn.jsdelivr.net/npm/web3@1.2.8/dist/web3.js"></script>
+    <script>	
+	
+	var account;
+	window.addEventListener('load', async () => {
+
+	
+		if (typeof window.ethereum !== 'undefined') { 
+			console.log("MetaMask is Available :) !"); 
+			}
+			
+		// Modern DApp browsers
+		if (window.ethereum) {
+			window.web3 = new Web3(ethereum);
+			
+			// To prevent the page reloading when the MetaMask network changes
+			ethereum.autoRefreshOnNetworkChange = false;
+			
+			// To Capture the account details from MetaMask
+			const accounts = await ethereum.enable();
+			account = accounts[0];
+				
+			}
+		// Legacy DApp browsers
+		else if (window.web3) {
+			window.web3 = new Web3(web3.currentProvider);
+			//window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+			}
+		// Non-DApp browsers
+		else {
+			console.log('Non-Ethereum browser detected. Please install MetaMask');
+			}
+			
+			});
+    	
+        var abi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "approved",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ApprovalForAll",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_built",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_nouirishment",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_eyes",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_tongue",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "_pulse",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "_blood_pressure",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "_temp",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "_respiratory_rate",
+				"type": "uint64"
+			}
+		],
+		"name": "general_examin",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_blood_test",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_urine_test",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_ecg",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_mri_scan",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_ct_scan",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_xray",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_lab_test",
+				"type": "string"
+			}
+		],
+		"name": "investigations",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "medical_record",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_previous",
+				"type": "string"
+			}
+		],
+		"name": "previous_dates",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_cvs",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_cns",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_rs",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_abdomen",
+				"type": "string"
+			}
+		],
+		"name": "sys_examin",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_general_examin",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_investigations",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_previous_dates",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "get_sys_examin",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getApproved",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "namedecl",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "ownerOf",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symboldecl",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        var contractaddress = '0x72dC8eF00317BE1C6b4BB08EaAbA57771f6eA741';
+		function date_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '500000'});
+            var idd = document.getElementById("tid1").value;
+             var result = myContract.methods.get_previous_dates(idd).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_dates1").innerHTML = result;
+                }
+               
+                });
+        }
+		
+		function get_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '5000000'});
+            var idt = document.getElementById("tid").value;
+			
+             var result = myContract.methods.get_investigations(idt).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_blood").innerHTML = result[0];
+					document.getElementById("get_uri").innerHTML = result[1];
+					document.getElementById("get_ecg").innerHTML = result[2];
+					document.getElementById("get_mri").innerHTML = result[3];
+					document.getElementById("get_ct").innerHTML = result[4];
+					document.getElementById("get_xray").innerHTML = result[5];
+					document.getElementById("get_lab").innerHTML = result[6];
+                }
+               
+                });
+				 var result = myContract.methods.get_general_examin(idt).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_built").innerHTML = result[0];
+					document.getElementById("get_nou").innerHTML = result[1];
+					document.getElementById("get_eyes").innerHTML = result[2];
+					document.getElementById("get_ton").innerHTML = result[3];
+					document.getElementById("get_pulse").innerHTML = result[4];
+					document.getElementById("get_bp").innerHTML = result[5];
+					document.getElementById("get_temp").innerHTML = result[6];
+					document.getElementById("get_res").innerHTML = result[7];
+					}
+               
+                });
+				 var result = myContract.methods.get_sys_examin(idt).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_cvs").innerHTML = result[0];
+					document.getElementById("get_cns").innerHTML = result[1];
+					document.getElementById("get_rs").innerHTML = result[2];
+					document.getElementById("get_abs").innerHTML = result[3];
+                }
+               
+                });
+				}  
+       
+		
+		
+        </script>
+		<h3>To update details of a patient body examine  <a href="patient_examine.html">Click Here</a></h3> 
+
+<h3>Previous dates of medical record updated</h3>
+        <div><form>
+		<table style="width:100%">
+		  <tr>
+			<td>Enter Patient Id:</td>
+			<td><input type="text" id="tid1" name="tid1"></td>
+		  </tr>
+		 
+            <tr>
+			<td> Dates:</td>
+			<td><div id="get_dates1"></div></td>
+		  </tr>
+		  
+		</table>
+		<input type="button" onclick="date_details()" value="Get Details">
+        </form></div>  
+		<h2>Patient Body Examine Details</h2>
+		<div>
+        <tr>
+			<td>Enter Record Id:</td>
+			<td><input type="text" id="tid" name="tid"></td>
+		  </tr>
+		  
+		 <tr><td><input type="button" onclick="get_details()" value="Get Details"></td></tr>
+		</div>
+        <h2>Investigations</h2>
+    <div><form>
+		<table style="width:35%"> 
+            
+            <tr>
+			<td> Blood Test:</td>
+			<td><div id="get_blood"></div></td>
+		  </tr>
+		  <tr>
+			<td>Urine Test:</td>
+			<td><div id="get_uri"></div></td>
+		  </tr>		   
+		   <tr>
+			<td>ECG:</td>
+			<td><div id="get_ecg"></div></td>
+		  </tr>
+            <tr>
+			<td>MRI Scan:</td>
+			<td><div id="get_mri"></div></td>
+		  </tr>
+		  <tr>
+			<td>CT Scan:</td>
+			<td><div id="get_ct"></div></td>
+		  </tr> 
+		   <tr>
+			<td>X-ray:</td>
+			<td><div id="get_xray"></div></td>
+		  </tr>
+		   <tr>
+			<td>Lab Test(if any other):</td>
+			<td><div id="get_lab"></div></td>
+		  </tr>
+		</table>
+		
+		
+	</form></div>
+	<h2> General Examination</h2>
+    <div><form>
+		<table style="width:100%"> 
+            
+            <tr>
+			<td>Built:</td>
+			<td><div id="get_built"></div></td>
+		  </tr>
+		  <tr>
+			<td>Nourishment:</td>
+			<td><div id="get_nou"></div></td>
+		  </tr>
+		  <tr>
+			<td>Eyes:</td>
+			<td><div id="get_eyes"></div></td>
+		  </tr>
+		  <tr>
+			<td>Tongue:</td>
+			<td><div id="get_ton"></div></td>
+		  </tr>
+		  <tr>
+			<td>Pulse:</td>
+			<td><div id="get_pulse"></div></td>
+		  </tr>
+		  <tr>
+			<td>Blood Pressure:</td>
+			<td><div id="get_bp"></div></td>
+		  </tr>
+		  <tr>
+			<td>Temperature:</td>
+			<td><div id="get_temp"></div></td>
+		  </tr>
+		  <tr>
+			<td>Respiratory rate:</td>
+			<td><div id="get_res"></div></td>
+		  </tr>
+		</table>
+	</form></div>
+	<h2> Systemic Examination</h2>
+    <div><form>
+		<table style="width:100%"> 
+           
+            <tr>
+			<td> CVS:</td>
+			<td><div id="get_cvs"></div></td>
+		  </tr>
+		  <tr>
+			<td>CNS:</td>
+			<td><div id="get_cns"></div></td>
+		  </tr>
+		  <tr>
+			<td>RS:</td>
+			<td><div id="get_rs"></div></td>
+		  </tr>
+		   <tr>
+			<td>Abdomen system:</td>
+			<td><div id="get_abs"></div></td>
+		  </tr>
+		  </table>
+	</form></div>
+	<style>
+		* {
+		  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+			Helvetica Neue, Ubuntu, sans-serif;
+		  text-align: center;
+		  margin-top: 2%;
+  
+		}
+		input[type="text"],
+		select {
+		  width: 100%;
+		  padding: 12px 20px;
+		  margin: 8px 0;
+		  display: inline-block;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		  box-sizing: border-box;
+		}
+  
+		input[type="button"] {
+		  width: 60%;
+		  background-color: #4caf50;
+		  color: white;
+		  padding: 14px 20px;
+		  margin: 20px 30px;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		}
+  
+		input[type="button"]:hover {
+		  background-color: #45a049;
+		}
+  
+		div {
+		  border-radius: 5px;
+		  margin-left: 20%;
+		  margin-right: 20%;
+		  background-color: #f2f2f2;
+		  padding: 20px;
+		}
+  
+		button {
+		  border: 2px solid black;
+		  background-color: white;
+		  color: black;
+		  padding: 14px 28px;
+		  font-size: 16px;
+		  cursor: pointer;
+		}
+		button:hover {
+		  background-color: black;
+		  color: white;
+		}
+	  </style>
+    </body>
+</html>

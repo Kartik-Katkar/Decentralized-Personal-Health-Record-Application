@@ -1,0 +1,394 @@
+<html>
+<head>
+<title>Patient Details</title>
+<link rel="icon" href="blockchain.png" type="image/icon type">
+</head>
+    <body>
+	<p><a href="hospital.html"><button type="submit" class="hidden" style='margin-right:16px'>Hospital Registration</button></a><a href="doctor.html"><button type="submit" class="hidden" style='margin-right:16px'>Doctor Registration</button></a><a href="patient.html"><button type="submit" class="hidden" style='margin-right:16px'>Patient Registration</button></a><a href="record_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Medical Record</button></a><a href="examine_details.html"><button type="submit" class="hidden" style='margin-right:16px'>View Patient Examine details</button></a></p>
+      
+        <h1>Display Patient Details</h1>
+        <script src="https://cdn.jsdelivr.net/npm/web3@1.2.8/dist/web3.js"></script>
+    <script>	
+	
+	var account;
+	window.addEventListener('load', async () => {
+
+	
+		if (typeof window.ethereum !== 'undefined') { 
+			console.log("MetaMask is Available :) !"); 
+			}
+			
+		// Modern DApp browsers
+		if (window.ethereum) {
+			window.web3 = new Web3(ethereum);
+			
+			// To prevent the page reloading when the MetaMask network changes
+			ethereum.autoRefreshOnNetworkChange = false;
+			
+			// To Capture the account details from MetaMask
+			const accounts = await ethereum.enable();
+			account = accounts[0];
+				
+			}
+		// Legacy DApp browsers
+		else if (window.web3) {
+			window.web3 = new Web3(web3.currentProvider);
+			//window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+			}
+		// Non-DApp browsers
+		else {
+			console.log('Non-Ethereum browser detected. Please install MetaMask');
+			}
+			
+			});
+    	
+        var abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_attendant_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_attendant_relation",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_attendant_phn_no",
+				"type": "uint256"
+			}
+		],
+		"name": "store_attendant_details",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_patient_name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_age",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_gender",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_height",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_weight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_patient_address",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_phone_no",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_email_id",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_date",
+				"type": "uint256"
+			}
+		],
+		"name": "store_patient_details",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "retreive_attendant_details",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "patient_id",
+				"type": "uint256"
+			}
+		],
+		"name": "retreive_patient_details",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        var contractaddress = '0x72dC8eF00317BE1C6b4BB08EaAbA57771f6eA741';
+        
+       
+		function get_details() {
+            var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '5000000'});
+            var idt = document.getElementById("tid2").value;
+			
+             var result = myContract.methods.retreive_patient_details(idt).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_name").innerHTML = result[0];
+					document.getElementById("get_age").innerHTML = result[1];
+					document.getElementById("get_gen").innerHTML = result[2];
+					document.getElementById("get_hght").innerHTML = result[3];
+					document.getElementById("get_weig").innerHTML = result[4];
+					document.getElementById("get_addr").innerHTML = result[5];
+					document.getElementById("get_pno").innerHTML = result[6];
+					document.getElementById("get_email").innerHTML = result[7];
+					document.getElementById("get_date").innerHTML = result[8];
+					
+					
+                }
+               
+                });
+				var result = myContract.methods.retreive_attendant_details(idt).call(function (err, result) {
+               
+                if (err) { console.log(err); }
+                if (result) { 
+                    document.getElementById("get_aname").innerHTML = result[0];
+					document.getElementById("get_rel").innerHTML = result[1];
+					document.getElementById("get_apno").innerHTML = result[2];
+					
+                }
+               
+                });
+				}
+
+		
+        </script>
+<div>
+       <tr>
+			<td>Enter Patient Id:</td>
+			<td><input type="text" id="tid2" name="tid2"></td>
+		  </tr>
+		  
+		 <tr><td><input type="button" onclick="get_details()" value="Get Details"></td></tr>
+		</div>
+        <h3>Patient Details</h3>
+        <div><form>
+		<table style="width:100%">
+		
+  
+            <tr>
+			<td> Patient Name:</td>
+			<td><div id="get_name"></div></td>
+		  </tr>
+		  
+		  <tr>
+			<td>Age:</td>
+			<td><div id="get_age"></div></td>
+		  </tr>
+		  <tr>
+			<td>Gender:</td>
+			<td><div id="get_gen"></div></td>
+		  </tr>
+		  <tr>
+			<td>Height(in ft):</td>
+			<td><div id="get_hght"></div></td>
+		  </tr>
+		  <tr>
+			<td>Weight(in kg):</td>
+			<td><div id="get_weig"></div></td>
+		  </tr>
+		  <tr>
+			<td>Address:</td>
+			<td><div id="get_addr"></div></td>
+		  </tr>
+		  <tr>
+			<td>Phone Number:</td>
+			<td><div id="get_pno"></div></td>
+		  </tr>
+		  <tr>
+			<td>Email Id:</td>
+			<td><div id="get_email"></div></td>
+		  </tr>
+		  <tr>
+			<td>Date:</td>
+			<td><div id="get_date"></div></td>
+		  </tr>
+		</table>
+        </form></div>  
+		<h3>Attendant Details</h3>
+        <div><form>
+		<table style="width:100%">
+  
+            <tr>
+			<td> Attendant Name:</td>
+			<td><div id="get_aname"></div></td>
+		  </tr>
+		  
+		  <tr>
+			<td>Attendant Relation</td>
+			<td><div id="get_rel"></div></td>
+		  </tr>
+		  <tr>
+			<td>Phone Number</td>
+			<td><div id="get_apno"></div></td>
+		  </tr>
+		  
+		</table>
+        </form></div>  
+		<style>
+			* {
+			  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+				Helvetica Neue, Ubuntu, sans-serif;
+			  text-align: center;
+			  margin-top: 2%;
+	  
+			}
+			input[type="text"],
+			select {
+			  width: 100%;
+			  padding: 12px 20px;
+			  margin: 8px 0;
+			  display: inline-block;
+			  border: 1px solid #ccc;
+			  border-radius: 4px;
+			  box-sizing: border-box;
+			}
+	  
+			input[type="button"] {
+			  width: 60%;
+			  background-color: #4caf50;
+			  color: white;
+			  padding: 14px 20px;
+			  margin: 20px 30px;
+			  border: none;
+			  border-radius: 4px;
+			  cursor: pointer;
+			}
+	  
+			input[type="button"]:hover {
+			  background-color: #45a049;
+			}
+	  
+			div {
+			  border-radius: 5px;
+			  margin-left: 20%;
+			  margin-right: 20%;
+			  background-color: #f2f2f2;
+			  padding: 20px;
+			}
+	  
+			button {
+			  border: 2px solid black;
+			  background-color: white;
+			  color: black;
+			  padding: 14px 28px;
+			  font-size: 16px;
+			  cursor: pointer;
+			}
+			button:hover {
+			  background-color: black;
+			  color: white;
+			}
+		  </style>
+    </body>
+</html>
