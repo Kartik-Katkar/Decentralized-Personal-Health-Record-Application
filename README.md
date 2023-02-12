@@ -2,7 +2,7 @@
   <img src="./images and videos/Cover.png" alt="Cover"/>
 </p>
 
-# Hospital_Management_System_Dapp
+# Decentralized personal health record application
 
 It is an Ethereum blockchain based database management system for hospital record management.
 
