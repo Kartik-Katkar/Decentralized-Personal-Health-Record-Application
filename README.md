@@ -7,7 +7,7 @@
 It is an Ethereum blockchain based database management system for hospital record management.
 
 
-# Screenshots of working
+# Screenshots of the project
 &nbsp; 
 
 The below image is a compilation of images which show the successful deployment and working of the project done through REMIX IDE and the Project is run through NodeJS and Lite-Server on Local System
@@ -139,7 +139,7 @@ web3.eth.getAccounts().then(console.log);
 
 #### If you face any other Problem vist official Docs or refer various blogs to run blockchain apps on PC
 
-### After this Deploy the contracts on Remix ide, Install lite-server and start a new server using lite-server and run the application
+### After this step Deploy the contracts on Remix ide, Install lite-server and start a new server using lite-server and run the application
 
 ## The problem DECENTRALIZED PERSONAL HEALTH RECORD APPLICATION solves
 
