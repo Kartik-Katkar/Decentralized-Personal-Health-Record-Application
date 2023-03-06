@@ -166,5 +166,4 @@ web3.eth.getAccounts().then(console.log);
 
 -Enable patient control over their data: Patients would have the ability to control and manage access to their personal health information (PHI) through the use of digital identity and consent management tools.
 
--So in order to enhance the hospital's digital health system, we propose a "Decentralized Medical data sharing & storage application based on blockchain."
-
+-So in order to enhance the hospital's digital health system, a "Decentralized Medical data sharing & storage application based on blockchain" is the solution.
