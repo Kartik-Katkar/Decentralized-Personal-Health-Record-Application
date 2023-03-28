@@ -4,7 +4,7 @@
 
 # Decentralized personal health record application
 
-It is an Ethereum blockchain based database management system for hospital record management.
+The project uses blockchain and smart contracts to let individuals manage and secure their health data. Its goal is to empower people to control their health information, communicate better with healthcare providers, and drive innovation in healthcare.
 
 
 # Screenshots of the project
