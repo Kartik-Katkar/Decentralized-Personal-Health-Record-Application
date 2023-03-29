@@ -8,6 +8,7 @@ The project uses blockchain and smart contracts to let individuals manage and se
 
 
 # Screenshots of the project
+
 &nbsp; 
 
 The below image is a compilation of images which show the successful deployment and working of the project done through REMIX IDE and the Project is run through NodeJS and Lite-Server on Local System
@@ -58,7 +59,7 @@ Please Refer the official documentation or the GITHUB Repository to install and 
 
 &nbsp;
 
-### Install Nodejs and Web3
+### Install Nodejs and Web3js
 
 Please read the [documentation][docs] for more.
 
