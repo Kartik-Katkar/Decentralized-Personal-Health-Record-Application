@@ -6,13 +6,11 @@
 
 The project uses blockchain and smart contracts to let individuals manage and secure their health data. The Project's goal is to empower people to control their health information, communicate better with healthcare providers, and drive innovation in healthcare.
 
-
 # Screenshots of the project
 
 &nbsp; 
 
 The below image is a compilation of images which show the successful deployment and working of the project done through REMIX IDE and the Project is run through NodeJS and Lite-Server on Local System
-
 
 <p align="center">
   <img src="./images and videos/Project.gif" alt="Image"/>
@@ -43,8 +41,6 @@ To learn how to develop MetaMask-compatible applications, visit their [Developer
 To learn how to contribute to the MetaMask project itself, visit their [Internal Docs](https://github.com/MetaMask/metamask-extension/tree/develop/docs).
 
 &nbsp;
-
-
 &nbsp;
 
 ### Remix IDE
