@@ -142,8 +142,7 @@ web3.eth.getAccounts().then(console.log);
 
 &nbsp;
 
-
--Currently, the hospitals use traditional methods to store critical medical data of the patients and that data is indirectly subject to various attacks and thefts.
+-Currently, the hospitals use traditional methods to store critical medical data of the patients which is indirectly subject to various attacks and thefts.
 
 -In digital health records in centralized system, data sharing and privacy preservation are big challenges since medical data is sensitive.
 
