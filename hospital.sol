@@ -1,8 +1,5 @@
 pragma solidity >=0.4.22 <0.7.0;
-/**
- * @title Hospital Registration
- * @dev Store & retreive Hospital details 
- */
+
  
 contract Hospital  {
     
@@ -26,7 +23,7 @@ contract Hospital  {
       }
       
       
-      // modifier to give access only to hospital
+      
       modifier isOwner() {
 
          require(msg.sender == owner, "Access is not allowed");
@@ -38,14 +35,7 @@ contract Hospital  {
      
      
     
-    
-     /**
-     * @dev Store hospital details
-     * @param hospital_id hospital registration id
-     * @param _hospital_name name of hospital
-     * @param _hospital_spec hospital specialisation
-     * @param _hospital_address hospital address
-     * */
+   
      function store_doctor_details(uint256 hospital_id,string memory _hospital_name,string memory _hospital_address,string memory _hospital_spec)public isOwner {
         
          h.hospital_name = _hospital_name;
@@ -59,10 +49,7 @@ contract Hospital  {
          }
          
         
-           /**
-     * @dev Retreive hospital details
-     * @param hospital_id hospital registration id
-     * */
+        
          function retreive_hospital_details(uint256 hospital_id) public view returns (string memory,string memory,string memory){
              
      hospital memory h = hospitallist[hospital_id];
