@@ -158,8 +158,6 @@ web3.eth.getAccounts().then(console.log);
 
 -Improve data interoperability: The system would enable the sharing of patient data between different healthcare organizations and systems, which would improve the continuity of care and medical research.
 
--Automate healthcare-related processes: Smart contracts on the blockchain platform could automate various processes such as claims processing, medical research and medical billing.
-
 -Enable patient control over their data: Patients would have the ability to control and manage access to their personal health information (PHI) through the use of digital identity and consent management tools.
 
 -So in order to enhance the hospital's digital health system, a "Decentralized Medical data sharing & storage application based on blockchain" is the solution.
