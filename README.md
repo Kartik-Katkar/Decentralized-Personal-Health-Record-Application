@@ -10,7 +10,7 @@ The project uses blockchain and smart contracts to let individuals manage and se
 
 &nbsp; 
 
-The below image is a compilation of images which show the successful deployment and working of the project done through REMIX IDE and the Project is run through NodeJS and Lite-Server on Local System
+The images show the successful deployment and working of the project done through REMIX IDE and the Project is run through NodeJS and Lite-Server on Local System
 
 <p align="center">
   <img src="./images and videos/Project.gif" alt="Image"/>
