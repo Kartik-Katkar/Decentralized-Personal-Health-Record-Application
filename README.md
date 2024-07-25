@@ -142,22 +142,6 @@ web3.eth.getAccounts().then(console.log);
 
 &nbsp;
 
--Currently, the hospitals use traditional methods to store critical medical data of the patients which is indirectly subject to various attacks and thefts.
+Problem Statement: Traditional and centralized methods for storing critical medical data are vulnerable to attacks and thefts, posing significant challenges in data sharing and privacy preservation due to the sensitive nature of medical information.
 
--In digital health records in centralized system, data sharing and privacy preservation are big challenges since medical data is sensitive.
-
--To design a decentralized application that is secure , private and where doctors are given a dependable way to maintain patient privacy while storing information about medical history.
-
--To design a system which is more patient centric so, if patient wishes only then their health records will be shared with the doctors.
-
--To develop a system that stores and displays the patients medical data to save time during emergency situations.
-
--Provide secure storage for patient information: The decentralized nature of blockchain technology would ensure that patient data is stored in a secure and tamper-proof manner, protecting it from unauthorized access or breaches.
-
--Facilitate data sharing: The system would allow authorized healthcare providers and researchers to access and share patient data in accordance with patient consent and data privacy regulations.
-
--Improve data interoperability: The system would enable the sharing of patient data between different healthcare organizations and systems, which would improve the continuity of care and medical research.
-
--Enable patient control over their data: Patients would have the ability to control and manage access to their personal health information (PHI) through the use of digital identity and consent management tools.
-
--In order to enhance the hospital's digital health system, a "Decentralized Medical data sharing & storage application based on blockchain" is the solution.
+Proposed Solution: Develop a decentralized blockchain-based application that ensures secure, tamper-proof storage and patient-controlled data sharing, enhancing privacy, interoperability, and efficiency, particularly in emergency situations.
