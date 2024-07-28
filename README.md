@@ -134,8 +134,6 @@ web3.eth.getAccounts().then(console.log);
 
 &nbsp;
 
-#### If you face any other Problem vist official Docs or refer various blogs to run blockchain apps on PC
-
 #### After this step Deploy the contracts on Remix ide, Install lite-server and start a new server using lite-server and run the application
 
 ## The problem DECENTRALIZED PERSONAL HEALTH RECORD APPLICATION solves
